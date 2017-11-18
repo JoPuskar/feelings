@@ -1,0 +1,12 @@
+{% load bootstrap3 %}
+
+    <form method="POST" action="#">
+        <h3>How are you feeling?</h3>
+        <div class="row">
+            {% csrf_token %}
+            <div class="col-md-4">{% bootstrap_field form.condition %}</div>
+            <div class="col-md-4">{% bootstrap_field form.notes %}</div>
+            <div class="col-md-2">{% buttons submit='Record' %}{% endbuttons %}</div>
+        </div>
+   </form>
+

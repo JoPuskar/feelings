@@ -6,8 +6,19 @@
 
 {% block content %}
     <div class="container">
-        {% thought_form %}
-        <h2>Welcome to the Dashboard !</h2>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <ul>
+                    {% for thought in user.thoughts.all %}
+                    <li>{{ thought.get_condition_display }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                {% thought_form %}
+            </div>
+        </div>
     </div>
 
 {% endblock %}

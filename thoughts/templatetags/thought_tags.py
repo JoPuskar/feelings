@@ -18,8 +18,11 @@ def thought_form():
 def chart_data(context):
     user = context['user']
     days_ago = timezone.now() - datetime.timedelta(days=10)
-    thoughts = user.thoughts.filter(recorded_at__gte=days_ago)
+    thoughts = user.thoughts.filter(
+        recorded_at__gte=days_ago
+    ).order_by('recorded_at')
+
     return json.dumps({
         'labels': [thought.recorded_at.strftime('%y-%m-%d') for thought in thoughts],
-        'series': [[thought.condition for thought in thoughts]]
+        'series': [[thought.condition*-1 for thought in thoughts]]
     })

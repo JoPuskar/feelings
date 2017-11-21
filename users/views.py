@@ -10,6 +10,7 @@ from braces.views import SelectRelatedMixin
 
 from . import forms
 
+
 class Dashboard(
     LoginRequiredMixin,
     SelectRelatedMixin,
@@ -21,6 +22,7 @@ class Dashboard(
 
     def get_object(self, query_set=None):
         return self.request.user
+
 
 class LogoutView(LoginRequiredMixin, generic.FormView):
     form_class = forms.LogoutForm
@@ -35,3 +37,5 @@ class SignUpView(generic.CreateView):
     form_class = UserCreationForm
     template_name = 'users/signup.html'
     success_url = reverse_lazy('users:dashboard')
+
+

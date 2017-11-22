@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.views import generic
 
 from braces.views import SetHeadlineMixin
@@ -32,6 +32,8 @@ class Update(LoginRequiredMixin, SetHeadlineMixin, generic.UpdateView):
     def get_headline(self):
         return 'Edit {}'.format(self.object.name)
 
+    def get_success_url(self):
+        return reverse('groups:companies:detail', kwargs={'slug': self.object.slug})
 
 class Detail(LoginRequiredMixin, SetHeadlineMixin, generic.DetailView):
     template_name = 'companies/detail.html'

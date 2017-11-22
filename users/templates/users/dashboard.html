@@ -13,10 +13,10 @@
                 <div class="list-group">
                     {% for thought in user.thoughts.all %}
                         <div class="list-group-item">
-                        <h4 class="list-group-item-heading">
-                            <time class="pull-right small" datetime="{{ thought.recorded_at }}">{{ thought.recorded_at|timesince }} ago</time>
-                            {{ thought.get_condition_display }}
-                        </h4>
+                            <h4 class="list-group-item-heading">
+                                <time class="pull-right small" datetime="{{ thought.recorded_at }}">{{ thought.recorded_at|timesince }} ago</time>
+                                {{ thought.get_condition_display }}
+                            </h4>
                             {% if thought.notes %} {{ thought.notes }}{% endif %}
                         </div>
                     {% endfor %}
@@ -37,8 +37,14 @@
                         <a href="{% url 'groups:companies:detail' slug=company.slug %}" class="list-group-item">{{ company.name }}</a>
                     {% endfor %}
                 </div>
+                <h3>Families</h3>
+                <div class="list-group">
+                    {% for family in user.families.all %}
+                        <a href="{% url 'groups:families:detail' slug=family.slug %}" class="list-group-item">{{ family.name }}</a>
+                    {% endfor %}
+                </div>
             </div>
-            </div>
+        </div>
     </div>
 
 {% endblock %}

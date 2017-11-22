@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ object.name }} | {{block.super}}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h3>{{ object.name }}</h3>
+                {{ object.description|linebreaks }}
+                {% if user == object.created_by %}
+                    <a href="{% url 'groups:families:update' slug=object.slug %}" class="btn btn-default">Edit</a>
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Members</h3>
+                     <div class="list-group">
+                        {% for member in object.members.all %}
+                                <a href="#" class="list-group-item">
+                                    {% if member == object.created_by %}
+                                        <i class="glyphicon glyphicon-star"></i>
+                                    {% endif %}
+                                        {{ member.get_full_name }}</a>
+                        {% endfor %}
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

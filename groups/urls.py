@@ -6,8 +6,9 @@ from .views import family
 
 company_patterns = [
     url(r'^create/$', company.Create.as_view(), name='create'),
+    url(r'^invites/$', company.Invites.as_view(), name='invites'),
     url(r'^edit/(?P<slug>[-\w]+)/$', company.Update.as_view(), name='update'),
-    url(r'^(?P<slug>[-\w]+)/$', company.Detail.as_view(), name='detail'),
+    url(r'^view/(?P<slug>[-\w]+)/$', company.Detail.as_view(), name='detail'),
 ]
 
 family_patterns = [

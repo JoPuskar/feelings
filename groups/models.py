@@ -17,6 +17,9 @@ class Group(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return self.name
+
 
 class Family(Group):
     members = models.ManyToManyField(User, related_name='families')
@@ -41,6 +44,10 @@ class Invite(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return '{} invited by {}'.format(self.to_user, self.from_user)
+
+
     def save(self, *args, **kwargs):
         if not self.pk:
             self.uuid = uuid.uuid4().hex
@@ -50,9 +57,15 @@ class Invite(models.Model):
 class CompanyInvite(Invite):
     company = models.ForeignKey(Company, related_name='invites')
 
+    def __str__(self):
+        return '{} invited to {} by {}'.format(self.to_user, self.company, self.from_user)
+
 
 class FamilyInvite(Invite):
     family = models.ForeignKey(Family, related_name='invites')
+
+    def __str__(self):
+        return '{} invited to {} by {}'.format(self.to_user, self.family, self.from_user)
 
 
 

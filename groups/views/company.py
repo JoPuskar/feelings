@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.views import generic
+from django.shortcuts import get_object_or_404
 
 from braces.views import SetHeadlineMixin
 
@@ -73,5 +74,24 @@ class Invites(LoginRequiredMixin, generic.ListView):
     template_name = 'companies/invites.html'
 
     def get_queryset(self):
-        return self.request.user.companyinvite_received.all()
+        return self.request.user.companyinvite_received.filter(status=0)
 
+
+class InviteResponse(LoginRequiredMixin, generic.RedirectView):
+    url = reverse_lazy('groups:companies:invites')
+
+    def get(self, request, *args, **kwargs):
+        invite = get_object_or_404(
+            models.CompanyInvite,
+            to_user=request.user,
+            uuid=kwargs.get('code'),
+            status=0
+        )
+        if kwargs.get('response')=='accept':
+            invite.status=1
+        else:
+            invite.status=2
+
+        invite.save()
+
+        return super().get(request, *args, **kwargs)

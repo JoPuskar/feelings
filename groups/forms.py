@@ -24,6 +24,7 @@ class CompanyInviteForm(forms.Form):
     def clean_email_or_username(self):
         data = self.cleaned_data['email_or_username']
         try:
+
             self.invitee = models.User.objects.get(
                 Q(email=data)|Q(username=data)
             )

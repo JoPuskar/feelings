@@ -49,3 +49,6 @@ class FamilyInviteForm(forms.Form):
 
         return data
 
+
+class LeaveForm(forms.Form):
+    pass

@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy, reverse
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.views import generic
 
@@ -66,6 +67,30 @@ class Detail(LoginRequiredMixin, generic.FormView):
             family=self.get_object()
         )
         return response
+
+
+class Leave(LoginRequiredMixin, SetHeadlineMixin, generic.FormView):
+    form_class = forms.LeaveForm
+    template_name = 'families/form.html'
+    success_url = reverse_lazy('users:dashboard')
+
+    def get_object(self):
+        try:
+            self.object = self.request.user.families.filter(
+                slug=self.kwargs.get('slug'),
+            ).exclude(created_by=self.request.user).get()
+
+        except models.Family.DoesNotExist:
+            raise Http404
+
+    def get_headline(self):
+        self.get_object()
+        return 'Leave {}?'.format(self.object)
+
+    def form_valid(self, form):
+        self.get_object()
+        self.object.members.remove(self.request.user)
+        return super().form_valid(form)
 
 
 class Invites(LoginRequiredMixin, generic.ListView):

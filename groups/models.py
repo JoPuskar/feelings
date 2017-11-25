@@ -36,11 +36,13 @@ class Company(Group):
     class Meta:
         verbose_name_plural = 'companies'
 
+
 INVITE_STATUSES = (
     (0, 'Pending'),
     (1, 'Accepted'),
     (2, 'Rejected')
 )
+
 
 class Invite(models.Model):
     from_user = models.ForeignKey(User, related_name='%(class)s_created')
@@ -53,7 +55,6 @@ class Invite(models.Model):
 
     def __str__(self):
         return '{} invited by {}'.format(self.to_user, self.from_user)
-
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -80,3 +81,10 @@ def join_company(sender, instance, created, **kwargs):
     if not created:
         if instance.status == 1:
             instance.company.members.add(instance.to_user)
+
+
+@receiver(post_save, sender=FamilyInvite)
+def join_family(sender, instance, created, **kwargs):
+    if not created:
+        if instance.status == 1:
+            instance.family.members.add(instance.to_user)

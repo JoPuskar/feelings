@@ -1,2 +1,5 @@
 #Database
 feelings/db.sqlite3
+
+#Email
+feelings/email/

@@ -4,9 +4,11 @@ from rest_framework import serializers
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    password = serializers.HiddenField(default='')
+
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name',
+        fields = ('username', 'password', 'first_name', 'last_name',
                   'email', 'last_login', 'date_joined')
         read_only_fields = ('username', 'last_login', 'date_joined',)
 
@@ -20,4 +22,5 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             del validated_data['username']
         except KeyError:
             pass
+        return super().update(self, validated_data)
 
